@@ -1,4 +1,4 @@
-package negocioLogica;
+package conexion;
 
 
 import java.sql.Connection;

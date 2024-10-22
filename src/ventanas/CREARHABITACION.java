@@ -4,6 +4,14 @@
  */
 package ventanas;
 
+import conexion.HabitacionDAO;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+
 /**
  *
  * @author HP
@@ -27,19 +35,19 @@ public class CREARHABITACION extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        TipoHabitacionTextField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        CapacidadTextField = new javax.swing.JTextField();
+        TarifaHabitacionTextField = new javax.swing.JTextField();
+        NumeroHabitacionTextField = new javax.swing.JTextField();
+        estadoHabitacionCombo = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        DetallesHabitacionTextArea = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -59,13 +67,13 @@ public class CREARHABITACION extends javax.swing.JFrame {
 
         jLabel5.setText("Estado de habitación");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupada", "En mantenimiento" }));
+        estadoHabitacionCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupada", "En mantenimiento" }));
 
         jLabel6.setText("Detalles habitacion");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        DetallesHabitacionTextArea.setColumns(20);
+        DetallesHabitacionTextArea.setRows(5);
+        jScrollPane1.setViewportView(DetallesHabitacionTextArea);
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/LOGO4.png"))); // NOI18N
 
@@ -74,6 +82,11 @@ public class CREARHABITACION extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/3.png"))); // NOI18N
         jButton1.setText("Crear Habitacion ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -99,11 +112,11 @@ public class CREARHABITACION extends javax.swing.JFrame {
                                 .addGap(17, 17, 17)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 149, Short.MAX_VALUE)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addComponent(estadoHabitacionCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, 149, Short.MAX_VALUE)
+                                        .addComponent(TarifaHabitacionTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(CapacidadTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(TipoHabitacionTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(NumeroHabitacionTextField, javax.swing.GroupLayout.Alignment.LEADING))
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(110, 110, 110)
@@ -123,23 +136,23 @@ public class CREARHABITACION extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TipoHabitacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CapacidadTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TarifaHabitacionTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NumeroHabitacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(estadoHabitacionCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
@@ -154,6 +167,97 @@ public class CREARHABITACION extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+
+        String numeroHab = NumeroHabitacionTextField.getText();
+        if (numeroHab.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El número de habitación no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;  // Detenemos la ejecución si el número de habitación está vacío
+        }
+
+        // Validación de capacidad
+        String numero = CapacidadTextField.getText();
+        if (!esNumeroEnteroValido(numero)) {
+            return;  // Detenemos la ejecución si la capacidad no es válida
+        }
+        int capacidad = Integer.parseInt(numero);
+
+        // Validación de tarifa
+        String tarifa = TarifaHabitacionTextField.getText();
+        if (!esNumeroDecimalValido(tarifa)) {
+            return;  // Detenemos la ejecución si la tarifa no es válida
+        }
+        double tarifaHabitacion = Double.parseDouble(tarifa);
+        tarifaHabitacion = formatoTarifa(tarifaHabitacion);
+
+        // Validación de tipo de habitación
+        String tipoHabitacion = TipoHabitacionTextField.getText();
+        if (tipoHabitacion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El tipo de habitación no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;  // Detenemos la ejecución si el tipo de habitación está vacío
+        }
+
+        // Validación de detalles de la habitación
+        String detallesHabitacion = DetallesHabitacionTextArea.getText();
+        if (detallesHabitacion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Los detalles de la habitación no pueden estar vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;  // Detenemos la ejecución si los detalles están vacíos
+        }
+
+        // Validación de estado de la habitación (ComboBox)
+        String estadoHabitacion = (String) estadoHabitacionCombo.getSelectedItem();
+        if (estadoHabitacion == null || estadoHabitacion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un estado para la habitación.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;  // Detenemos la ejecución si el estado no está seleccionado
+        }
+
+        // Si todas las validaciones son correctas, se procede con la creación de la habitación
+        try {
+            HabitacionDAO crearHabitacion = new HabitacionDAO();
+            crearHabitacion.crearHabitacion(numeroHab, tipoHabitacion, capacidad, tarifaHabitacion, estadoHabitacion, detallesHabitacion);
+        } catch (SQLException ex) {
+            Logger.getLogger(CREARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private boolean esNumeroEnteroValido(String numero) {
+        try {
+            int valor = Integer.parseInt(numero);
+            if (valor > 0) {
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "El número debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "No se ingresó un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+// Método para validar si una cadena es un número decimal válido y mayor que cero
+    private boolean esNumeroDecimalValido(String numero) {
+        try {
+            double valor = Double.parseDouble(numero);
+            if (valor > 0) {
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "El número debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "No se ingresó un número decimal válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+// Método para formatear la tarifa a dos decimales
+private double formatoTarifa(double tarifa) {
+    String valorFormateado = String.format("%.2f", tarifa);
+    return Double.parseDouble(valorFormateado);
+}
+    
+
+  
     /**
      * @param args the command line arguments
      */
@@ -190,8 +294,13 @@ public class CREARHABITACION extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField CapacidadTextField;
+    private javax.swing.JTextArea DetallesHabitacionTextArea;
+    private javax.swing.JTextField NumeroHabitacionTextField;
+    private javax.swing.JTextField TarifaHabitacionTextField;
+    private javax.swing.JTextField TipoHabitacionTextField;
+    private javax.swing.JComboBox<String> estadoHabitacionCombo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -202,10 +311,5 @@ public class CREARHABITACION extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

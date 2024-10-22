@@ -1,7 +1,7 @@
-package negocioLogica;
+package conexion;
 
 
-import negocioLogica.ConexionBaseDatos;
+
 import java.sql.Connection;
 import java.sql.*;
 import java.sql.SQLException;
