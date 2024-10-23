@@ -4,6 +4,7 @@
  */
 package ventanas;
 
+import conexion.HabitacionDAO;
 import java.awt.Component;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -13,6 +14,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,16 +30,24 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
      */
     public MODIFICARHABITACION() {
         initComponents();
+            //configurarComboBox();
+       
+        try {
+            rellenarDatosTabla1();
+            rellenarDatosTabla2();
+        } catch (SQLException ex) {
+            Logger.getLogger(MODIFICARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
+        }
         agregarBotonEliminar();
     }
 
     private void agregarBotonEliminar() {
         // Agrega una nueva columna "Eliminar" al modelo de la tabla
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) habitacionTable2.getModel();
         model.addColumn("Eliminar");
 
         // Define el renderizador de la columna para mostrar un botón con un ícono
-        jTable2.getColumn("Eliminar").setCellRenderer(new TableCellRenderer() {
+        habitacionTable2.getColumn("Eliminar").setCellRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JButton button = new JButton("Eliminar");
@@ -44,17 +57,30 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         });
 
         // Define el editor de la celda para que los botones sean interactivos
-        jTable2.getColumn("Eliminar").setCellEditor(new DefaultCellEditor(new JCheckBox()) {
+        habitacionTable2.getColumn("Eliminar").setCellEditor(new DefaultCellEditor(new JCheckBox()) {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
                 JButton button = new JButton("Eliminar");
+                
                 //button.setIcon(new ImageIcon("ruta/a/icono.png")); // Coloca aquí la ruta a tu icono
 
                 // Acción al hacer clic en el botón
                 button.addActionListener(e -> {
                     int confirmar = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta habitacion?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+                    DefaultTableModel modelo=(DefaultTableModel)habitacionTable2.getModel();
                     if (confirmar == JOptionPane.YES_OPTION) {
-                        ((DefaultTableModel) jTable2.getModel()).removeRow(row); // Elimina la fila
+                        Object idHabitacionT=modelo.getValueAt(row, 0);
+                        String idHab=String.valueOf(idHabitacionT);
+                        int idHAB=Integer.parseInt(idHab);
+                        try {
+                            HabitacionDAO habitacionSQL = new HabitacionDAO();
+                            habitacionSQL.eliminarHabitacion(idHAB);
+                            JOptionPane.showMessageDialog(null, "La habitación ha sido eliminada con éxito!");
+                        ((DefaultTableModel) habitacionTable2.getModel()).removeRow(row); // Elimina la fila
+                        } catch (SQLException ex) {
+                            Logger.getLogger(MODIFICARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
                     }
                 });
                 return button;
@@ -69,22 +95,23 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        capacidadTextField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        tarifaTextField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        detallesHabitacionTextArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        habitacionTabla1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        estadoTextField = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        habitacionTable2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -106,30 +133,46 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
 
         jLabel6.setText("Detalles habitacion");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        detallesHabitacionTextArea.setColumns(20);
+        detallesHabitacionTextArea.setRows(5);
+        jScrollPane1.setViewportView(detallesHabitacionTextArea);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        habitacionTabla1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id habitacion", "Numero habitacion", "Tipo habitacion", "Capacidad", "Tarifa", "Estado", "Detalles"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        habitacionTabla1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                habitacionTabla1MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(habitacionTabla1);
 
         jButton1.setText("Actualizar datos ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/8.png"))); // NOI18N
         jButton2.setText("Agregar nuevo ");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
+            }
+        });
+
+        estadoTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoTextFieldActionPerformed(evt);
             }
         });
 
@@ -153,16 +196,19 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                                     .addComponent(jLabel3))
                                 .addGap(39, 39, 39)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(tarifaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(capacidadTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(estadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -186,15 +232,16 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(capacidadTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tarifaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(estadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
@@ -215,7 +262,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel9.setText("ELIMINAR HABITACIÓN");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        habitacionTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -223,10 +270,10 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido", "Rol", "Fecha contratacion", "Telefono", "Correo", "Contraseña"
+                "Id habitacion", "Numero habitacion", "Tipo habitacion", "Capacidad", "Tarifa", "Estado", "Detalles"
             }
         ));
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(habitacionTable2);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -261,6 +308,148 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         new CREARHABITACION().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void configurarComboBox() throws SQLException{
+        ResultSet resultadosConsulta;
+        HabitacionDAO habitaciones = new HabitacionDAO();
+        resultadosConsulta=habitaciones.obtenerTiposHabitacion();
+        while(resultadosConsulta.next()){
+            String tipoHabitacion=resultadosConsulta.getString("Tipo_habitacion");
+            jComboBox1.addItem(tipoHabitacion);
+            
+        }
+    }
+    private void habitacionTabla1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_habitacionTabla1MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel modeloTabla = (DefaultTableModel)habitacionTabla1.getModel();
+        Object id_habitacionInt=modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 0);
+        String idHab=String.valueOf(id_habitacionInt);
+        id_habitacion=Integer.parseInt(idHab);
+
+        Object capacidadInt=modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 3);
+        String capacidad=String.valueOf(capacidadInt);
+        
+        Object tarifaHabitacionDouble=modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 4);
+        String tarifaHabitacion=String.valueOf(tarifaHabitacionDouble);
+        
+        Object estadoHabitacionTable=modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 5);
+        String estadoHabitacion=String.valueOf(estadoHabitacionTable);
+        
+        Object detallesHabObj=modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 6);
+        String detallesHab=String.valueOf(detallesHabObj);
+        
+        capacidadTextField.setText(capacidad);
+        tarifaTextField.setText(tarifaHabitacion);
+        estadoTextField.setText(estadoHabitacion);
+        detallesHabitacionTextArea.setText(detallesHab);
+    }//GEN-LAST:event_habitacionTabla1MouseClicked
+
+    private void estadoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_estadoTextFieldActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String capacidadNueva=capacidadTextField.getText();
+        String nuevaTarifa=tarifaTextField.getText();
+        String nuevoEstado = estadoTextField.getText();
+        String detallesHabNuevos = detallesHabitacionTextArea.getText();
+
+        if (capacidadNueva.isEmpty() && nuevaTarifa.isEmpty() && nuevoEstado.isEmpty() && detallesHabNuevos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No pueden haber campos vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;  // Detenemos la ejecución si todos los campos están vacíos
+        }
+        if (!esNumeroEnteroValido(capacidadNueva)) {
+            return;
+        }
+        int capacidadN = Integer.parseInt(capacidadNueva);
+        
+        if (!esNumeroDecimalValido(nuevaTarifa)) {
+            return;  // Detenemos la ejecución si la tarifa no es válida
+        }
+        double tarifaHabitacion = Double.parseDouble(nuevaTarifa);
+        tarifaHabitacion = formatoTarifa(tarifaHabitacion);
+        try {
+            HabitacionDAO habitacionInsert=new HabitacionDAO();
+            habitacionInsert.actualizarHabitacion(capacidadN, tarifaHabitacion, nuevoEstado, detallesHabNuevos,id_habitacion);
+            JOptionPane.showMessageDialog(null, "La habitación ha sido modificada con éxito!");
+        } catch (SQLException ex) {
+            Logger.getLogger(MODIFICARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private boolean esNumeroEnteroValido(String numero) {
+        try {
+            int valor = Integer.parseInt(numero);
+            if (valor > 0) {
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "El número debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "No se ingresó un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+    // Método para validar si una cadena es un número decimal válido y mayor que cero
+    private boolean esNumeroDecimalValido(String numero) {
+        try {
+            double valor = Double.parseDouble(numero);
+            if (valor > 0) {
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "El número debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "No se ingresó un número decimal válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+// Método para formatear la tarifa a dos decimales
+    private double formatoTarifa(double tarifa) {
+        String valorFormateado = String.format("%.2f", tarifa);
+        return Double.parseDouble(valorFormateado);
+    }
+    private void rellenarDatosTabla1() throws SQLException{
+        DefaultTableModel modeloTabla = (DefaultTableModel)habitacionTabla1.getModel();
+        modeloTabla.setRowCount(0);
+        ResultSet resultadosConsulta;
+        HabitacionDAO habitaciones = new HabitacionDAO();
+        resultadosConsulta=habitaciones.obtenerDatosHabitaciones();
+        while(resultadosConsulta.next()){
+            int id=resultadosConsulta.getInt("Id_habitacion");
+            String numeroHabitacion=resultadosConsulta.getString("Numero_habitacion");
+            String tipoHabitacion=resultadosConsulta.getString("Tipo_habitacion");
+            int capacidad=resultadosConsulta.getInt("Capacidad");
+            double tarifa=resultadosConsulta.getDouble("Tarifa_habitacion");
+            String estadoHabitaion=resultadosConsulta.getString("Estado_habitacion");
+            String detallesHabitacion=resultadosConsulta.getString("Detalles_habitacion");
+            
+            modeloTabla.addRow(new Object[]{id,numeroHabitacion,tipoHabitacion,capacidad,tarifa,estadoHabitaion,detallesHabitacion});
+        }
+        
+    }
+    private void rellenarDatosTabla2() throws SQLException{
+        DefaultTableModel modeloTabla = (DefaultTableModel)habitacionTable2.getModel();
+        modeloTabla.setRowCount(0);
+        ResultSet resultadosConsulta;
+        HabitacionDAO habitaciones = new HabitacionDAO();
+        resultadosConsulta=habitaciones.obtenerDatosHabitaciones();
+        while(resultadosConsulta.next()){
+            int id=resultadosConsulta.getInt("Id_habitacion");
+            String numeroHabitacion=resultadosConsulta.getString("Numero_habitacion");
+            String tipoHabitacion=resultadosConsulta.getString("Tipo_habitacion");
+            int capacidad=resultadosConsulta.getInt("Capacidad");
+            double tarifa=resultadosConsulta.getDouble("Tarifa_habitacion");
+            String estadoHabitaion=resultadosConsulta.getString("Estado_habitacion");
+            String detallesHabitacion=resultadosConsulta.getString("Detalles_habitacion");
+            
+            modeloTabla.addRow(new Object[]{id,numeroHabitacion,tipoHabitacion,capacidad,tarifa,estadoHabitaion,detallesHabitacion});
+        }
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -297,6 +486,11 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField capacidadTextField;
+    private javax.swing.JTextArea detallesHabitacionTextArea;
+    private javax.swing.JTextField estadoTextField;
+    private javax.swing.JTable habitacionTabla1;
+    private javax.swing.JTable habitacionTable2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -312,10 +506,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField tarifaTextField;
     // End of variables declaration//GEN-END:variables
+    private int id_habitacion;
 }

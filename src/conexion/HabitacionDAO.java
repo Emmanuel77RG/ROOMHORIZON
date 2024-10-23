@@ -38,13 +38,40 @@ public class HabitacionDAO {
     public void modificarHabitacion(int idHabitacion){
         String query=("Delete from hotel.habitaciones where Id_habitacion=?");
     }
+    public ResultSet obtenerDatosHabitaciones()throws SQLException{
+        String query=("Select * from hotel.habitaciones");
+        PreparedStatement statement=conectionDB.prepareStatement(query);
+        return statement.executeQuery();
+        
+    }
     
+    public ResultSet obtenerTiposHabitacion() throws SQLException{
+        String query="select Tipo_habitacion from hotel.habitaciones group by Tipo_habitacion";
+        PreparedStatement statement=conectionDB.prepareStatement(query);
+        return statement.executeQuery();
+    }
+    
+    public void actualizarHabitacion(int capacidad,double tarifa,String estadoHab,String detalleshab,int idHab) throws SQLException{
+        String query="Update hotel.habitaciones set Capacidad=?,Tarifa_habitacion=?,Estado_habitacion=?,Detalles_habitacion=? where Id_habitacion=?";
+        PreparedStatement statement=conectionDB.prepareStatement(query);
+        statement.setInt(1, capacidad);
+        statement.setDouble(2, tarifa);
+        statement.setString(3, estadoHab);
+        statement.setString(4, detalleshab);
+        statement.setInt(5, idHab);
+        statement.executeUpdate();
+    }
+    public void actualizarHabitacion(int capacidad,double tarifa,String estadoHab) throws SQLException{
+        String query="Update hotel.habitaciones set Capacidad=?,Tarifa_habitacion=',Estado_habitacion=?";
+        PreparedStatement statement=conectionDB.prepareStatement(query);
+        statement.executeUpdate();
+    }
     public void eliminarHabitacion(int idHabitacion){
         String query=("Delete from hotel.habitaciones where Id_habitacion=?");
         try {
             PreparedStatement statement=conectionDB.prepareStatement(query);
             statement.setInt(1, idHabitacion);
-            statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(HabitacionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
