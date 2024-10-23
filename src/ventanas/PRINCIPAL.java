@@ -33,7 +33,6 @@ public class PRINCIPAL extends javax.swing.JFrame {
         RPAGOS = new javax.swing.JButton();
         CHABITACION = new javax.swing.JButton();
         MHABITACIO = new javax.swing.JButton();
-        EHABITACION = new javax.swing.JButton();
         CRESERVAS = new javax.swing.JButton();
         MRESERVAR = new javax.swing.JButton();
         CANCELARR = new javax.swing.JButton();
@@ -77,14 +76,6 @@ public class PRINCIPAL extends javax.swing.JFrame {
             }
         });
 
-        EHABITACION.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/11.png"))); // NOI18N
-        EHABITACION.setText("Eliminar habitacion ");
-        EHABITACION.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EHABITACIONActionPerformed(evt);
-            }
-        });
-
         CRESERVAS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/1.png"))); // NOI18N
         CRESERVAS.setText("Crear reservas ");
         CRESERVAS.addActionListener(new java.awt.event.ActionListener() {
@@ -95,6 +86,11 @@ public class PRINCIPAL extends javax.swing.JFrame {
 
         MRESERVAR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/12.png"))); // NOI18N
         MRESERVAR.setText("Modificar reservas");
+        MRESERVAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MRESERVARActionPerformed(evt);
+            }
+        });
 
         CANCELARR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/6.png"))); // NOI18N
         CANCELARR.setText("Cancelar reservas");
@@ -134,7 +130,6 @@ public class PRINCIPAL extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(CANCELARR, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CHECKIN, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,21 +147,23 @@ public class PRINCIPAL extends javax.swing.JFrame {
                                         .addGap(42, 42, 42)
                                         .addComponent(CHABITACION, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(58, 58, 58)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(EHABITACION)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(EEMPLEADO, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(240, 240, 240))))
+                                .addComponent(EEMPLEADO, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(240, 240, 240))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addComponent(RPAGOS, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(66, 66, 66)
-                                            .addComponent(RCIENTE, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(MRESERVAR, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(MHABITACIO, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(MRESERVAR, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(MHABITACIO, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(56, 56, 56)
+                                                .addComponent(RCIENTE, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(RPAGOS, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(66, 66, 66)
+                                                .addComponent(CHECKIN, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(8, 8, 8))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel1)
                                         .addGap(74, 74, 74)))))))
@@ -181,7 +178,7 @@ public class PRINCIPAL extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CHABITACION, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(MHABITACIO, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EHABITACION, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(RCIENTE, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(45, 45, 45)
@@ -190,19 +187,18 @@ public class PRINCIPAL extends javax.swing.JFrame {
                             .addComponent(CANCELARR, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(MRESERVAR, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(153, 153, 153)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(CFACTURAS, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(RPAGOS, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(RCIENTE, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(CHECKIN, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(EEMPLEADO, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(REMPLEADO, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CHECKIN, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(REMPLEADO, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(67, 67, 67))
         );
 
@@ -219,25 +215,25 @@ public class PRINCIPAL extends javax.swing.JFrame {
         new MODIFICARHABITACION().setVisible(true);
     }//GEN-LAST:event_MHABITACIOActionPerformed
 
-    private void EHABITACIONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EHABITACIONActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EHABITACIONActionPerformed
+    private void CRESERVASActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CRESERVASActionPerformed
+        new CREARESERVAS().setVisible(true);
+    }//GEN-LAST:event_CRESERVASActionPerformed
+
+    private void RCIENTEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RCIENTEActionPerformed
+        new REGISTROCLIENTE().setVisible(true);
+    }//GEN-LAST:event_RCIENTEActionPerformed
 
     private void REMPLEADOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_REMPLEADOActionPerformed
         new CREAREMPLEADO().setVisible(true);
     }//GEN-LAST:event_REMPLEADOActionPerformed
 
     private void EEMPLEADOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EEMPLEADOActionPerformed
-        new ELIMINAREMPLEADO().setVisible(true);
+        new MODIFICAREMPLEADO().setVisible(true);
     }//GEN-LAST:event_EEMPLEADOActionPerformed
 
-    private void RCIENTEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RCIENTEActionPerformed
-        new REGISTROCLIENTE().setVisible(true);
-    }//GEN-LAST:event_RCIENTEActionPerformed
-
-    private void CRESERVASActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CRESERVASActionPerformed
-        new CREARESERVAS().setVisible(true);
-    }//GEN-LAST:event_CRESERVASActionPerformed
+    private void MRESERVARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MRESERVARActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MRESERVARActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,7 +277,6 @@ public class PRINCIPAL extends javax.swing.JFrame {
     private javax.swing.JButton CHECKIN;
     private javax.swing.JButton CRESERVAS;
     private javax.swing.JButton EEMPLEADO;
-    private javax.swing.JButton EHABITACION;
     private javax.swing.JButton MHABITACIO;
     private javax.swing.JButton MRESERVAR;
     private javax.swing.JButton RCIENTE;

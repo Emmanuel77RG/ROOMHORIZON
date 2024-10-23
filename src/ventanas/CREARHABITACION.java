@@ -5,6 +5,8 @@
 package ventanas;
 
 import conexion.HabitacionDAO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
@@ -50,7 +52,7 @@ public class CREARHABITACION extends javax.swing.JFrame {
         DetallesHabitacionTextArea = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        crear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -80,11 +82,11 @@ public class CREARHABITACION extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel9.setText("CREAR HABITACIÓN");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/3.png"))); // NOI18N
-        jButton1.setText("Crear Habitacion ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        crear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/3.png"))); // NOI18N
+        crear.setText("Crear Habitacion ");
+        crear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                crearActionPerformed(evt);
             }
         });
 
@@ -120,7 +122,7 @@ public class CREARHABITACION extends javax.swing.JFrame {
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(110, 110, 110)
-                        .addComponent(jButton1)))
+                        .addComponent(crear)))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -158,7 +160,7 @@ public class CREARHABITACION extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(crear, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40))
         );
 
@@ -167,7 +169,7 @@ public class CREARHABITACION extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearActionPerformed
         // TODO add your handling code here:
 
         String numeroHab = NumeroHabitacionTextField.getText();
@@ -219,7 +221,24 @@ public class CREARHABITACION extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(CREARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+        crear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Aquí iría el código para guardar la información de la habitación
+                // Por ahora, simplemente mostramos un mensaje de confirmación
+                JOptionPane.showMessageDialog(null, "La habitación ha sido creada con éxito!");
+
+                // Limpiar los campos
+                NumeroHabitacionTextField.setText("");
+                CapacidadTextField.setText("");
+                TarifaHabitacionTextField.setText("");
+                TipoHabitacionTextField.setText("");
+                estadoHabitacionCombo.setSelectedIndex(0);
+                DetallesHabitacionTextArea.setText("");
+            }
+        });
+    }//GEN-LAST:event_crearActionPerformed
 
     private boolean esNumeroEnteroValido(String numero) {
         try {
@@ -299,8 +318,8 @@ private double formatoTarifa(double tarifa) {
     private javax.swing.JTextField NumeroHabitacionTextField;
     private javax.swing.JTextField TarifaHabitacionTextField;
     private javax.swing.JTextField TipoHabitacionTextField;
+    private javax.swing.JButton crear;
     private javax.swing.JComboBox<String> estadoHabitacionCombo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -37,7 +37,7 @@ public class EmpleadoDAO {
         statement.setString(4, password);
         statement.setString(5, correo);
         statement.setString(6, fechaContratacion);
-        statement.executeQuery();
+        statement.executeUpdate();
     }
     public void eliminarEmpleadoPorId(int idEmpleado) throws SQLException {
         String query = "Delete from hotel.empelados WHERE Id_empleado = ?";

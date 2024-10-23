@@ -6,12 +6,37 @@ package ventanas;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+
 
 
 public class INCIARREP extends javax.swing.JFrame {
+    private JButton togglePasswordButton;
+    private boolean isPasswordVisible = false;
 
     public INCIARREP() {
         initComponents();
+        togglePasswordButton = new JButton("Ver");
+        togglePasswordButton.setBounds(310, 110, 60, 25);
+        togglePasswordButton.setFocusPainted(false);
+        add(togglePasswordButton);
+
+        // Acción del botón para mostrar/ocultar contraseña
+        togglePasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isPasswordVisible) {
+                    txtcon.setEchoChar('•');
+                    togglePasswordButton.setText("Ver");
+                } else {
+                    txtcon.setEchoChar((char) 0);
+                    togglePasswordButton.setText("Ocultar");
+                }
+                isPasswordVisible = !isPasswordVisible;
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -28,8 +53,6 @@ public class INCIARREP extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtcon = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
-        OCULTAR = new javax.swing.JLabel();
-        VER = new javax.swing.JLabel();
         entrar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -54,23 +77,6 @@ public class INCIARREP extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("CORREO  ");
-
-        OCULTAR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/cerrar-ojo.png"))); // NOI18N
-        OCULTAR.setText("jLabel9");
-        OCULTAR.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        OCULTAR.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        OCULTAR.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                OCULTARMouseClicked(evt);
-            }
-        });
-
-        VER.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/leer.png"))); // NOI18N
-        VER.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                VERMouseClicked(evt);
-            }
-        });
 
         entrar.setText("INGRESAR");
         entrar.addActionListener(new java.awt.event.ActionListener() {
@@ -100,22 +106,15 @@ public class INCIARREP extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtcon, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(OCULTAR, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(VER)))))
+                            .addComponent(txtcon, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(48, 48, 48)
-                                .addComponent(jLabel3))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel3)))))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -126,21 +125,16 @@ public class INCIARREP extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(VER, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtcon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4))))
-                    .addComponent(OCULTAR, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(23, 23, 23)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtcon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(34, 34, 34)
                 .addComponent(entrar)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 140, 460, 300));
@@ -167,20 +161,6 @@ public class INCIARREP extends javax.swing.JFrame {
     private void txtcorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcorreoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtcorreoActionPerformed
-
-    private void OCULTARMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OCULTARMouseClicked
-        VER.setVisible(true);
-        OCULTAR.setVisible(false);
-        txtcon.setEchoChar('●');
-
-    }//GEN-LAST:event_OCULTARMouseClicked
-
-    private void VERMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VERMouseClicked
-        VER.setVisible(false);
-        OCULTAR.setVisible(true);
-        txtcon.setEchoChar((char)0);
-
-    }//GEN-LAST:event_VERMouseClicked
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
         new PRINCIPAL().setVisible(true);
@@ -222,8 +202,6 @@ public class INCIARREP extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel OCULTAR;
-    private javax.swing.JLabel VER;
     private javax.swing.JButton entrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
