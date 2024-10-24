@@ -95,35 +95,33 @@ public class CREARHABITACION extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel9))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addGap(17, 17, 17)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(estadoHabitacionCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, 149, Short.MAX_VALUE)
-                                        .addComponent(TarifaHabitacionTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(CapacidadTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(TipoHabitacionTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(NumeroHabitacionTextField, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel9))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(110, 110, 110)
-                        .addComponent(crear)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(estadoHabitacionCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TarifaHabitacionTextField)
+                            .addComponent(NumeroHabitacionTextField)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TipoHabitacionTextField)
+                            .addComponent(CapacidadTextField))))
+                .addGap(51, 51, 51))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(108, 108, 108)
+                .addComponent(crear)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,9 +157,9 @@ public class CREARHABITACION extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(crear, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+                .addGap(28, 28, 28))
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 550));
@@ -218,21 +216,26 @@ public class CREARHABITACION extends javax.swing.JFrame {
         try {
             HabitacionDAO crearHabitacion = new HabitacionDAO();
             crearHabitacion.crearHabitacion(numeroHab, tipoHabitacion, capacidad, tarifaHabitacion, estadoHabitacion, detallesHabitacion);
-            JOptionPane.showMessageDialog(null, "La habitación ha sido creada con éxito!");
-
-            // Limpiar los campos después de crear la habitación
-            NumeroHabitacionTextField.setText("");
-            CapacidadTextField.setText("");
-            TarifaHabitacionTextField.setText("");
-            TipoHabitacionTextField.setText("");
-            estadoHabitacionCombo.setSelectedIndex(0);
-            DetallesHabitacionTextArea.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(CREARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Ocurrió un error al crear la habitación.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
-        
+        crear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Aquí iría el código para guardar la información de la habitación
+                // Por ahora, simplemente mostramos un mensaje de confirmación
+                JOptionPane.showMessageDialog(null, "La habitación ha sido creada con éxito!");
+
+                // Limpiar los campos
+                NumeroHabitacionTextField.setText("");
+                CapacidadTextField.setText("");
+                TarifaHabitacionTextField.setText("");
+                TipoHabitacionTextField.setText("");
+                estadoHabitacionCombo.setSelectedIndex(0);
+                DetallesHabitacionTextArea.setText("");
+            }
+        });
     }//GEN-LAST:event_crearActionPerformed
 
     private boolean esNumeroEnteroValido(String numero) {

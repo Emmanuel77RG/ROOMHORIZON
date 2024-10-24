@@ -30,8 +30,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
      */
     public MODIFICARHABITACION() {
         initComponents();
-            //configurarComboBox();
-       
+        
         try {
             rellenarDatosTabla1();
             rellenarDatosTabla2();
@@ -40,7 +39,6 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         }
         agregarBotonEliminar();
     }
-
     private void agregarBotonEliminar() {
         // Agrega una nueva columna "Eliminar" al modelo de la tabla
         DefaultTableModel model = (DefaultTableModel) habitacionTable2.getModel();
@@ -99,15 +97,15 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         tarifaTextField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        estadoTextField = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         detallesHabitacionTextArea = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        habitacionTabla1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        estadoTextField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        habitacionTabla1 = new javax.swing.JTable();
+        estadoTextField1 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -125,17 +123,33 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
 
         jLabel3.setText("Capacidad");
 
-        jLabel4.setText("Tarifa habitacion");
+        jLabel4.setText("Tarifa habitación");
 
         jLabel5.setText("Estado de habitación");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupada", "En mantenimiento" }));
+        estadoTextField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupada", "En mantenimiento" }));
 
-        jLabel6.setText("Detalles habitacion");
+        jLabel6.setText("Detalles habitación");
 
         detallesHabitacionTextArea.setColumns(20);
         detallesHabitacionTextArea.setRows(5);
         jScrollPane1.setViewportView(detallesHabitacionTextArea);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/actualizacion-de-sistema.png"))); // NOI18N
+        jButton1.setText("Actualizar datos ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/8.png"))); // NOI18N
+        jButton2.setText("Agregar nuevo ");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         habitacionTabla1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -155,24 +169,9 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(habitacionTabla1);
 
-        jButton1.setText("Actualizar datos ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        estadoTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/8.png"))); // NOI18N
-        jButton2.setText("Agregar nuevo ");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        estadoTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estadoTextFieldActionPerformed(evt);
+                estadoTextField1ActionPerformed(evt);
             }
         });
 
@@ -195,29 +194,30 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel3))
                                 .addGap(39, 39, 39)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tarifaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(capacidadTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tarifaTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+                                    .addComponent(capacidadTextField)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel6))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(estadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(estadoTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(estadoTextField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 22, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,15 +240,15 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(estadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(estadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(estadoTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -280,26 +280,29 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(47, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(162, 162, 162))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))))
+                .addContainerGap(155, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(162, 162, 162))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(34, 34, 34)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(34, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jLabel9)
-                .addGap(36, 36, 36)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(311, Short.MAX_VALUE))
+                .addContainerGap(586, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(210, 210, 210)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(211, Short.MAX_VALUE)))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, 560, 660));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, 550, 660));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -307,14 +310,13 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         new CREARHABITACION().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
-
     private void configurarComboBox() throws SQLException{
         ResultSet resultadosConsulta;
         HabitacionDAO habitaciones = new HabitacionDAO();
         resultadosConsulta=habitaciones.obtenerTiposHabitacion();
         while(resultadosConsulta.next()){
             String tipoHabitacion=resultadosConsulta.getString("Tipo_habitacion");
-            jComboBox1.addItem(tipoHabitacion);
+            estadoTextField.addItem(tipoHabitacion);
             
         }
     }
@@ -339,19 +341,14 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         
         capacidadTextField.setText(capacidad);
         tarifaTextField.setText(tarifaHabitacion);
-        estadoTextField.setText(estadoHabitacion);
+        estadoTextField1.setText(estadoHabitacion);
         detallesHabitacionTextArea.setText(detallesHab);
     }//GEN-LAST:event_habitacionTabla1MouseClicked
 
-    private void estadoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_estadoTextFieldActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         String capacidadNueva=capacidadTextField.getText();
         String nuevaTarifa=tarifaTextField.getText();
-        String nuevoEstado = estadoTextField.getText();
+        String nuevoEstado = estadoTextField1.getText();
         String detallesHabNuevos = detallesHabitacionTextArea.getText();
 
         if (capacidadNueva.isEmpty() && nuevaTarifa.isEmpty() && nuevoEstado.isEmpty() && detallesHabNuevos.isEmpty()) {
@@ -375,11 +372,13 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(MODIFICARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private boolean esNumeroEnteroValido(String numero) {
+    private void estadoTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_estadoTextField1ActionPerformed
+     private boolean esNumeroEnteroValido(String numero) {
         try {
             int valor = Integer.parseInt(numero);
             if (valor > 0) {
@@ -488,12 +487,12 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField capacidadTextField;
     private javax.swing.JTextArea detallesHabitacionTextArea;
-    private javax.swing.JTextField estadoTextField;
+    private javax.swing.JComboBox<String> estadoTextField;
+    private javax.swing.JTextField estadoTextField1;
     private javax.swing.JTable habitacionTabla1;
     private javax.swing.JTable habitacionTable2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -508,5 +507,4 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField tarifaTextField;
     // End of variables declaration//GEN-END:variables
-    private int id_habitacion;
-}
+private int id_habitacion;}

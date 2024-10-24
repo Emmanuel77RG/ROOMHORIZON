@@ -25,7 +25,7 @@ public class ConexionBaseDatos {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 String url="jdbc:mysql://localhost:3306/hotel";
                 String usuario="root";
-                String password="48v01jL3/7)32&";
+                String password="root";
                 coneccionDB=DriverManager.getConnection(url, usuario, password);
             
             } catch (ClassNotFoundException ex) {
