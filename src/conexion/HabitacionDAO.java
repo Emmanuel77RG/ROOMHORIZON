@@ -51,14 +51,15 @@ public class HabitacionDAO {
         return statement.executeQuery();
     }
     
-    public void actualizarHabitacion(int capacidad,double tarifa,String estadoHab,String detalleshab,int idHab) throws SQLException{
-        String query="Update hotel.habitaciones set Capacidad=?,Tarifa_habitacion=?,Estado_habitacion=?,Detalles_habitacion=? where Id_habitacion=?";
+    public void actualizarHabitacion(int capacidad,double tarifa,String estadoHab,String detalleshab,int idHab,String numeroHab) throws SQLException{
+        String query="Update hotel.habitaciones set Capacidad=?,Tarifa_habitacion=?,Estado_habitacion=?,Detalles_habitacion=? where Id_habitacion=? and Numero_habitacion=?";
         PreparedStatement statement=conectionDB.prepareStatement(query);
         statement.setInt(1, capacidad);
         statement.setDouble(2, tarifa);
         statement.setString(3, estadoHab);
         statement.setString(4, detalleshab);
         statement.setInt(5, idHab);
+        statement.setString(6, numeroHab);
         statement.executeUpdate();
     }
     public void actualizarHabitacion(int capacidad,double tarifa,String estadoHab) throws SQLException{
@@ -78,4 +79,34 @@ public class HabitacionDAO {
         
         
     }
+
+    public ResultSet obtenerHabitacionesDisponiblesFechas(String fechaInicio, String fechaFin) throws SQLException {
+        String query = "SELECT h.Id_habitacion, h.Numero_habitacion, h.Tipo_habitacion, h.Capacidad, h.Tarifa_habitacion, h.Estado_habitacion, h.Detalles_habitacion\n"
+                + "FROM hotel.Habitaciones h\n"
+                + "WHERE h.Estado_habitacion = 'Disponible'\n"
+                + "AND h.Id_habitacion NOT IN (\n"
+                + "    SELECT dr.Id_habitacion\n"
+                + "    FROM hotel.Detalles_reserva dr\n"
+                + "    INNER JOIN hotel.Reservas r ON dr.Id_reserva = r.Id_reserva\n"
+                + "    WHERE r.Fecha_entrada <= ? AND r.Fecha_salida > ?);";
+
+        PreparedStatement statement=conectionDB.prepareStatement(query);
+        statement.setString(1, fechaInicio);
+        statement.setString(2, fechaFin);
+        return statement.executeQuery();
+        
+    }
+    public ResultSet habitacionesDisponiblesNumeroHab(String numeroHab) throws SQLException{
+        String query="Select * from hotel.habitaciones where Numero_habitacion=?";
+        PreparedStatement statement=conectionDB.prepareStatement(query);
+        statement.setString(1, numeroHab);
+        return statement.executeQuery();
+    }
+    public ResultSet habitacionesDisponiblesTipo(String tipoHab) throws SQLException{
+        String query="Select * from hotel.habitaciones where Tipo_habitacion=? and Estado_habitacion='Disponible'";
+        PreparedStatement statement=conectionDB.prepareStatement(query);
+        statement.setString(1, tipoHab);
+        return statement.executeQuery();
+    }
+    
 }

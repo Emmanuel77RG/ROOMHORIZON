@@ -4,11 +4,16 @@
  */
 package ventanas;
 
+import clases.Empleado;
+import conexion.EmpleadoDAO;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.JButton;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
 
 
@@ -19,9 +24,10 @@ public class INCIARREP extends javax.swing.JFrame {
     public INCIARREP() {
         initComponents();
         togglePasswordButton = new JButton("Ver");
-        togglePasswordButton.setBounds(310, 110, 60, 25);
         togglePasswordButton.setFocusPainted(false);
-        add(togglePasswordButton);
+
+        // Añadir el botón al panel en lugar de al JFrame
+        panelBotton.add(togglePasswordButton);
 
         // Acción del botón para mostrar/ocultar contraseña
         togglePasswordButton.addActionListener(new ActionListener() {
@@ -42,8 +48,9 @@ public class INCIARREP extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     public Image getIconImage (){
         Image retValue= Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("C:\\Users\\HP\\Pictures\\UNI NAD\\QUINTO SEMESTRE\\ANALISIS Y DISEÑO\\LOGO3.png"));
-        return retValue;  
+        return retValue;
     }
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -55,6 +62,7 @@ public class INCIARREP extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         entrar = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        panelBotton = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
@@ -88,12 +96,30 @@ public class INCIARREP extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Britannic Bold", 0, 18)); // NOI18N
         jLabel7.setText("\"FACILITANDO CADA RESERVA DESDE EL PRIMER");
 
+        javax.swing.GroupLayout panelBottonLayout = new javax.swing.GroupLayout(panelBotton);
+        panelBotton.setLayout(panelBottonLayout);
+        panelBottonLayout.setHorizontalGroup(
+            panelBottonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+        panelBottonLayout.setVerticalGroup(
+            panelBottonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 35, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addComponent(jLabel3))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -105,20 +131,14 @@ public class INCIARREP extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtcon, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(jLabel3)))))
-                .addContainerGap())
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(panelBotton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,9 +152,11 @@ public class INCIARREP extends javax.swing.JFrame {
                     .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtcon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtcon, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(panelBotton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(entrar)
                 .addContainerGap(45, Short.MAX_VALUE))
@@ -166,8 +188,27 @@ public class INCIARREP extends javax.swing.JFrame {
     }//GEN-LAST:event_txtcorreoActionPerformed
 
     private void entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrarActionPerformed
-        new PRINCIPAL().setVisible(true);
+        String password = txtcon.getText();
+        String correo = txtcorreo.getText();
+
+        try {
+            consultaEmpleado = new EmpleadoDAO();
+            empleado = consultaEmpleado.buscarEmpleadoBase(correo, password);
+            if (empleado != null) {
+                // Iniciar la sesión con el objeto Empleado
+                new PRINCIPAL(empleado).setVisible(true);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error de conexión", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+       
     }//GEN-LAST:event_entrarActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -204,6 +245,8 @@ public class INCIARREP extends javax.swing.JFrame {
         });
     }
 
+    private EmpleadoDAO consultaEmpleado;
+    private Empleado empleado;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton entrar;
     private javax.swing.JLabel jLabel1;
@@ -213,6 +256,7 @@ public class INCIARREP extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel panelBotton;
     private javax.swing.JPasswordField txtcon;
     private javax.swing.JTextField txtcorreo;
     // End of variables declaration//GEN-END:variables

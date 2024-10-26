@@ -2,6 +2,7 @@ package conexion;
 
 
 
+import clases.Empleado;
 import java.sql.Connection;
 import java.sql.*;
 import java.sql.SQLException;
@@ -44,5 +45,19 @@ public class EmpleadoDAO {
         PreparedStatement statement = conexion.prepareStatement(query);
         statement.setInt(1, idEmpleado);
         statement.executeQuery();
+    }
+    public Empleado buscarEmpleadoBase(String correo,String password) throws SQLException {
+        Empleado empleado=null;
+        String query = "SELECT * FROM hotel.empleados WHERE Correo=? and Contrasena=?";
+        PreparedStatement statement = conexion.prepareStatement(query);
+        statement.setString(1, correo);
+        statement.setString(2, password);
+        ResultSet resultado;
+        resultado= statement.executeQuery();
+        if(resultado.next()){
+            empleado=new Empleado(resultado.getInt("Id_empleado"),resultado.getString("Nombre"),resultado.getString("Apellido"),resultado.getString("Rol"),
+            resultado.getString("Correo"),resultado.getString("Contrasena"),resultado.getString("Numero"));
+        }
+        return empleado;
     }
 }

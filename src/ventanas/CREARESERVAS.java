@@ -4,12 +4,25 @@
  */
 package ventanas;
 
+import clases.Cliente;
+import clases.Empleado;
+import clases.Habitacion;
+import clases.Reservas;
+import clases.ReservasManager;
 import com.toedter.calendar.JDateChooser;
+import conexion.ClienteDAO;
+import conexion.ReservasDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,27 +33,34 @@ public class CREARESERVAS extends javax.swing.JFrame {
     /**
      * Creates new form CREARESERVAS
      */
-    public CREARESERVAS() {
+    public CREARESERVAS(Empleado empleado) throws SQLException {
         initComponents();
         crearComponentesExtra1();
         crearComponentesExtra2();
+        this.empleado=empleado;
+        rellenarTabla();
     }
+//    public CREARESERVAS() {
+//        initComponents();
+//        crearComponentesExtra1();
+//        crearComponentesExtra2();
+//    }
     
     private void crearComponentesExtra1() {
-        JDateChooser calendario = new JDateChooser();
-        calendario.setVisible(true);
+        calendario1 = new JDateChooser();
+        calendario1.setVisible(true);
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 5));
         // Añadir el calendario a jPanel2
-        jPanel5.add(calendario);
+        jPanel5.add(calendario1);
 
         jPanel5.revalidate();
         jPanel5.repaint();
-        calendario.addPropertyChangeListener("date", new java.beans.PropertyChangeListener() {
+        calendario1.addPropertyChangeListener("date", new java.beans.PropertyChangeListener() {
             @Override
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 // Obtener la fecha seleccionada después de que el usuario haya interactuado
-                Date fechaSeleccionada = calendario.getDate();
+                Date fechaSeleccionada = calendario1.getDate();
 
                 // Verificar si se ha seleccionado una fecha
                 if (fechaSeleccionada != null) {
@@ -55,26 +75,27 @@ public class CREARESERVAS extends javax.swing.JFrame {
         });
     }
     private void crearComponentesExtra2() {
-        JDateChooser calendario = new JDateChooser();
-        calendario.setVisible(true);
+        calendario2 = new JDateChooser();
+        calendario2.setVisible(true);
 
         jPanel6.setLayout(new java.awt.GridLayout(1, 5));
         // Añadir el calendario a jPanel2
-        jPanel6.add(calendario);
+        jPanel6.add(calendario2);
 
         jPanel6.revalidate();
         jPanel6.repaint();
-        calendario.addPropertyChangeListener("date", new java.beans.PropertyChangeListener() {
+        calendario2.addPropertyChangeListener("date", new java.beans.PropertyChangeListener() {
             @Override
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 // Obtener la fecha seleccionada después de que el usuario haya interactuado
-                Date fechaSeleccionada = calendario.getDate();
+                Date fechaSeleccionada = calendario2.getDate();
 
                 // Verificar si se ha seleccionado una fecha
                 if (fechaSeleccionada != null) {
                     // Corregir el formato de MySQL
                     SimpleDateFormat formatoMySQL = new SimpleDateFormat("yyyy-MM-dd"); // Cambiar 'DD' a 'dd'
                     String formatoFechaMySQL = formatoMySQL.format(fechaSeleccionada);
+                    System.out.println("Calendariom2");
                     System.out.println("Formato MySQL: " + formatoFechaMySQL);
                 } else {
                     System.out.println("No se ha seleccionado ninguna fecha.");
@@ -90,36 +111,30 @@ public class CREARESERVAS extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        textFieldHabitacion = new javax.swing.JTextField();
+        HabitacionTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        textFieldCliente = new javax.swing.JTextField();
+        ClienteTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        textFieldTipoHabitacion = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
+        numPersonasTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        notasTextArea = new javax.swing.JTextArea();
         jLabel20 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        textFieldTipoHabitacion1 = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
+        estadoReservaCombo = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         Modificar = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        reservasTable = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nombreClienteField = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -132,25 +147,19 @@ public class CREARESERVAS extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Britannic Bold", 0, 24)); // NOI18N
         jLabel9.setText("CREAR RESERVAS");
 
-        jLabel1.setText("Habitación :");
+        jLabel1.setText("Numero habitacion");
 
         jLabel2.setText("Cliente : ");
 
-        textFieldCliente.addActionListener(new java.awt.event.ActionListener() {
+        ClienteTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldClienteActionPerformed(evt);
+                ClienteTextFieldActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Tipo de habitación : ");
+        jLabel3.setText("Estado reserva");
 
         jLabel4.setText("Numero de persona:");
-
-        textFieldTipoHabitacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldTipoHabitacionActionPerformed(evt);
-            }
-        });
 
         jPanel5.setBackground(new java.awt.Color(230, 213, 193));
 
@@ -174,22 +183,11 @@ public class CREARESERVAS extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/lupa (1).png"))); // NOI18N
-
-        jLabel5.setText("Estado de reserva:");
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/lupa (1).png"))); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         jLabel6.setText("Notas: ");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        notasTextArea.setColumns(20);
+        notasTextArea.setRows(5);
+        jScrollPane1.setViewportView(notasTextArea);
 
         jLabel20.setText("Fecha de Entrada :");
 
@@ -208,16 +206,21 @@ public class CREARESERVAS extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/1.png"))); // NOI18N
         jButton1.setText("Agregar");
-
-        textFieldTipoHabitacion1.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldTipoHabitacion1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        jLabel10.setText("Disponibilidad_habitación");
-
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/lupa (1).png"))); // NOI18N
+        jButton6.setToolTipText("");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        estadoReservaCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Confirmada", "En estancia", "Finalizada", "No show", "Cancelada" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -229,59 +232,51 @@ public class CREARESERVAS extends javax.swing.JFrame {
                 .addGap(47, 47, 47)
                 .addComponent(jLabel9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(textFieldHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textFieldCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(textFieldTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textFieldTipoHabitacion1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel4))
                             .addComponent(jLabel20)
-                            .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel6))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(75, 75, 75))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(72, 72, 72))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(48, 48, 48))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(numPersonasTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(HabitacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ClienteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(estadoReservaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
+                .addGap(75, 75, 75))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,7 +288,7 @@ public class CREARESERVAS extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(textFieldCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(ClienteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jLabel9)
@@ -302,32 +297,22 @@ public class CREARESERVAS extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textFieldHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(HabitacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(8, 8, 8)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(textFieldTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(textFieldTipoHabitacion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel10))
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                    .addComponent(estadoReservaCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(numPersonasTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel20)
@@ -347,6 +332,11 @@ public class CREARESERVAS extends javax.swing.JFrame {
 
         Modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/12.png"))); // NOI18N
         Modificar.setText("Modificar");
+        Modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarActionPerformed(evt);
+            }
+        });
 
         cancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/6.png"))); // NOI18N
         cancelar.setText("Cancelar ");
@@ -356,28 +346,38 @@ public class CREARESERVAS extends javax.swing.JFrame {
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        reservasTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "No. reserva", "Nombre", "Apellido", "Correo", "Telefono", "Fecha entrada", "Fecha salida", "Estado", "Numero personas", "Notas", "Numero habitacion", "Tipo habitacion", "Tarifa"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        reservasTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reservasTableMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(reservasTable);
 
         jLabel7.setText("Buscar : ");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        nombreClienteField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                nombreClienteFieldActionPerformed(evt);
             }
         });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/lupa (1).png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -389,7 +389,7 @@ public class CREARESERVAS extends javax.swing.JFrame {
                         .addGap(74, 74, 74)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nombreClienteField, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -397,11 +397,11 @@ public class CREARESERVAS extends javax.swing.JFrame {
                         .addComponent(Modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(66, 66, 66)
                         .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(408, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 40, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 820, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -409,112 +409,413 @@ public class CREARESERVAS extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreClienteField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 580, 660));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 880, 660));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textFieldTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldTipoHabitacionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldTipoHabitacionActionPerformed
-
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
-        cancelar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int response = JOptionPane.showConfirmDialog(null, "¿Desea cancelar el registro? No se guardarán los cambios.", "Confirmar", JOptionPane.YES_NO_OPTION);
-                if (response == JOptionPane.YES_OPTION) {
-                    // Aquí puedes cerrar la ventana o limpiar los campos
-                    dispose(); // Esto cerrará la ventana
-                    // Si deseas limpiar los campos en lugar de cerrar la ventana, usa lo siguiente:
-                    // limpiarCampos();
-                }
+        int response = JOptionPane.showConfirmDialog(null, "¿Desea cancelar la reservar? Los cambios no pueden deshacerse", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (response == JOptionPane.YES_OPTION) {
+            // Lógica para cancelar la reserva
+            try {
+                reservasDAO = new ReservasDAO();
+                reservasDAO.cancelarReserva(objetoReferencia.getHabitacion().getIdHabitacion(), objetoReferencia.getIdReserva(), objetoReferencia.getCliente().getId_cliente(), objetoReferencia.getEmpleado().getId_empleado());
+                JOptionPane.showMessageDialog(null, "Reserva cancelada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                rellenarTabla();
+            } catch (SQLException ex) {
+                Logger.getLogger(CREARESERVAS.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
+            //dispose(); // Cerrar la ventana
+            // Si deseas limpiar los campos en lugar de cerrar la ventana, usa lo siguiente:
+            // limpiarCampos();
+        }
     }//GEN-LAST:event_cancelarActionPerformed
 
-    private void textFieldClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldClienteActionPerformed
+    private void ClienteTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClienteTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldClienteActionPerformed
+    }//GEN-LAST:event_ClienteTextFieldActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        ResultSet resultadosConsulta;
+        try {
+            // TODO add your handling code here:
+            //Boton para obtener clientes
+            ClienteDAO clientes = new ClienteDAO();
+            resultadosConsulta = clientes.obtenerClientes();
+            new LISTAEMPLEADOS(resultadosConsulta, this).setVisible(true);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CREARESERVAS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void nombreClienteFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreClienteFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_nombreClienteFieldActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+            // TODO add your handling code here:
+            new HABITACIONESDISPONIBILIDAD(this).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(CREARESERVAS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void textFieldTipoHabitacion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldTipoHabitacion1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldTipoHabitacion1ActionPerformed
+        //CREAR RESERVA LOGICA
+
+        // Validaciones para campos vacíos
+        if (ClienteTextField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo Cliente no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (HabitacionTextField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo Número de Habitación no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (jPanel5.getComponentCount() == 0 || jPanel6.getComponentCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Las fechas de entrada y salida no pueden estar vacías.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Capturar fechas
+        JDateChooser fechaEntradaChooser = (JDateChooser) jPanel6.getComponent(0);
+        JDateChooser fechaSalidaChooser = (JDateChooser) jPanel5.getComponent(0);
+        Date fechaEntrada = fechaEntradaChooser.getDate();
+        Date fechaSalida = fechaSalidaChooser.getDate();
+
+        if (fechaEntrada == null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar la fecha de entrada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (fechaSalida == null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar la fecha de salida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Formato de fechas para MySQL
+        SimpleDateFormat formatoMySQL = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaEntradaMySQL = formatoMySQL.format(fechaEntrada);
+        String fechaSalidaMySQL = formatoMySQL.format(fechaSalida);
+
+        // Validar número de personas
+        String numeroPersonasReserva = numPersonasTextField.getText();
+        if (!esNumeroEnteroValido(numeroPersonasReserva)) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un numero valido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int capacidad = Integer.parseInt(numeroPersonasReserva);
+        String estadoreserva = String.valueOf(estadoReservaCombo.getSelectedItem());
+
+        // Continuar con la lógica de crear reserva
+        String notasReserva = notasTextArea.getText();
+        reserva=new Reservas(habitacion, cliente, empleado, fechaEntrada, fechaSalida, estadoreserva,capacidad, notasReserva);
+        try {
+            reservasDAO = new ReservasDAO();
+            // Crear la reserva en la base de datos
+            reservasDAO.crearReservaDB(reserva.getCliente().getId_cliente(),reserva.getEmpleado().getId_empleado(), fechaEntradaMySQL, fechaSalidaMySQL, estadoreserva);
+
+            // Obtener el ID de la reserva del cliente mas reciente
+            int idReserva = reservasDAO.obtenerReservaCliente(reserva.getCliente().getId_cliente());
+            reserva.setIdReserva(idReserva);
+            // Crear los detalles de la reserva
+            reservasDAO.crearReservaDetallesReserva(reserva.getIdReserva(), reserva.getHabitacion().getIdHabitacion(), capacidad, notasReserva);
+
+            // Actualizar el estado de la habitación
+            reservasDAO.actualizarHabitacion(reserva.getHabitacion().getIdHabitacion());
+
+            JOptionPane.showMessageDialog(null, "Reserva creada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(CREARESERVAS.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al crear la reserva: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        try {
+            rellenarTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(CREARESERVAS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        String nombreCliente = nombreClienteField.getText().trim().toLowerCase();
+        DefaultTableModel modelo = (DefaultTableModel) reservasTable.getModel();
+
+        if (nombreCliente.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel modeloOriginal = (DefaultTableModel) reservasTable.getModel();
+        DefaultTableModel modeloFiltrado = new DefaultTableModel();
+
+        // Copiar las columnas al nuevo modelo
+        for (int i = 0; i < modeloOriginal.getColumnCount(); i++) {
+            modeloFiltrado.addColumn(modeloOriginal.getColumnName(i));
+        }
+        boolean hayCoincidencias = false;
+        for (int i = 0; i < modeloOriginal.getRowCount(); i++) {
+            String nombreFila = modeloOriginal.getValueAt(i, 0).toString().toLowerCase(); // Suponiendo que la columna 0 contiene el nombre del cliente
+
+            if (nombreFila.contains(nombreCliente)) {
+                modeloFiltrado.addRow(new Object[modeloOriginal.getColumnCount()]);
+                for (int j = 0; j < modeloOriginal.getColumnCount(); j++) {
+                    modeloFiltrado.setValueAt(modeloOriginal.getValueAt(i, j), modeloFiltrado.getRowCount() - 1, j);
+                }
+                hayCoincidencias = true;
+            }
+        }
+
+        if (hayCoincidencias) {
+            reservasTable.setModel(modeloFiltrado);
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay reservas asociadas a tal cliente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void reservasTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservasTableMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel modelo = (DefaultTableModel) reservasTable.getModel();
+
+        Object idRESERVA = modelo.getValueAt(reservasTable.getSelectedRow(), 0);
+        int idResCli = Integer.parseInt(String.valueOf(idRESERVA));
+        
+        Object nombreCli = modelo.getValueAt(reservasTable.getSelectedRow(), 1);
+        String nombre = String.valueOf(nombreCli);
+
+        Object apellidoCli = modelo.getValueAt(reservasTable.getSelectedRow(), 2);
+        String apellido = String.valueOf(apellidoCli);
+
+        Object numeroHAB = modelo.getValueAt(reservasTable.getSelectedRow(), 10);
+        String numeroHab = String.valueOf(numeroHAB);
+
+        reserva = ReservasManager.getInstance().buscarReserva(idResCli,nombre, apellido, numeroHab);
+        if (reserva != null) {
+            objetoReferencia = reserva;
+            //habitacion=objetoReferencia.getHabitacion();
+//            if (habitacion == null) {
+//                JOptionPane.showMessageDialog(null, "La habitacion no se ha iniciado", "Error", JOptionPane.ERROR_MESSAGE);
+//            }
+            ClienteTextField.setText(reserva.getCliente().getNombre());
+            HabitacionTextField.setText(reserva.getHabitacion().getNumeroHabitacion());
+            numPersonasTextField.setText(String.valueOf(reserva.getCantidadPersonas()));
+            notasTextArea.setText(reserva.getNotas());
+            estadoReservaCombo.setSelectedItem(reserva.getEstadoReserva());
+            calendario2.setDate(reserva.getFechaEntrada());
+            calendario1.setDate(reserva.getFechaSalida());
+            estadoReservaCombo.setSelectedItem(reserva.getEstadoReserva());
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo encontrar la reserva seleccionada.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_reservasTableMouseClicked
+
+    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
+        // TODO add your handling code here:
+        //CODIGO para modifcar la habitacion;
+        if (ClienteTextField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo Cliente no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (HabitacionTextField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El campo Número de Habitación no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (jPanel5.getComponentCount() == 0 || jPanel6.getComponentCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Las fechas de entrada y salida no pueden estar vacías.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Capturar fechas
+        JDateChooser fechaEntradaChooser = (JDateChooser) jPanel6.getComponent(0);
+        JDateChooser fechaSalidaChooser = (JDateChooser) jPanel5.getComponent(0);
+        Date fechaEntrada = fechaEntradaChooser.getDate();
+        Date fechaSalida = fechaSalidaChooser.getDate();
+
+        if (fechaEntrada == null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar la fecha de entrada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (fechaSalida == null) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar la fecha de salida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Formato de fechas para MySQL
+        SimpleDateFormat formatoMySQL = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaEntradaMySQL = formatoMySQL.format(fechaEntrada);
+        String fechaSalidaMySQL = formatoMySQL.format(fechaSalida);
+
+        // Capturar fecha y hora actual para MySQL
+        SimpleDateFormat formatoDateTimeMySQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String fechaHoraActualMySQL = formatoDateTimeMySQL.format(new Date());
+        // Validar número de personas
+        String numeroPersonasReserva = numPersonasTextField.getText();
+        if (!esNumeroEnteroValido(numeroPersonasReserva)) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un numero valido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int capacidad = Integer.parseInt(numeroPersonasReserva);
+        String estadoreserva = String.valueOf(estadoReservaCombo.getSelectedItem());
+
+        // Continuar con la lógica de crear reserva
+        String notasReserva = notasTextArea.getText();
+//        if(objetoReferencia.getHabitacion()==null){
+//            System.out.println("La haabitacion no se ha inciiado");
+//            
+//            return;
+//        }
+        try {
+            reservasDAO = new ReservasDAO();
+
+            // Verificar si la habitación ha cambiado
+            if (habitacion != null) {
+                // Escenario 1: Se seleccionó una nueva habitación
+                reservasDAO.modificarReservas(objetoReferencia.getIdReserva(), objetoReferencia.getEmpleado().getId_empleado(), estadoreserva, fechaEntradaMySQL, fechaSalidaMySQL, fechaHoraActualMySQL);
+                reservasDAO.modificarReservaConCambioDeHabitacion(objetoReferencia.getIdReserva(), objetoReferencia.getHabitacion().getIdHabitacion(), habitacion.getIdHabitacion(), capacidad, notasReserva);
+            } else {
+                // Escenario 2: No se seleccionó una nueva habitación
+                reservasDAO.modificarReservas(objetoReferencia.getIdReserva(), objetoReferencia.getEmpleado().getId_empleado(), estadoreserva, fechaEntradaMySQL, fechaSalidaMySQL, fechaHoraActualMySQL);
+                reservasDAO.modificarReservaSinCambioDeHabitacion(objetoReferencia.getIdReserva(), objetoReferencia.getHabitacion().getIdHabitacion(), capacidad, notasReserva);
+            }
+
+            JOptionPane.showMessageDialog(null, "Reserva modificada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Actualizar la tabla de reservas después de la modificación
+            rellenarTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(CREARESERVAS.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al modificar la reserva: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_ModificarActionPerformed
+
+    
+    private boolean esNumeroEnteroValido(String numero) {
+        try {
+            int valor = Integer.parseInt(numero);
+            if (valor > 0) {
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "El número debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "No se ingresó un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+    public void setClienteSeleccionado(Cliente cliente) {
+        this.cliente = cliente;
+        ClienteTextField.setText(cliente.getNombre());  // Asigna el nombre al textFieldCliente
+    }
+    public void setHabitacionSeleccionada(Habitacion habitacion) {
+        this.habitacion=habitacion;
+        HabitacionTextField.setText(habitacion.getNumeroHabitacion());
+    }
+    
+    
+    private void rellenarTabla() throws SQLException{
+        listaReservas = new ArrayList<>();
+        DefaultTableModel modelo = (DefaultTableModel)reservasTable.getModel();
+        modelo.setRowCount(0);
+        reservasDAO= new ReservasDAO();
+        listaReservas = reservasDAO.obtenerReservas(empleado);
+        for (Reservas res : listaReservas) {
+            Object[] fila = {
+                res.getIdReserva(),
+                res.getCliente().getNombre(),
+                res.getCliente().getApellido(),
+                res.getCliente().getCorreo(),
+                res.getCliente().getNumero(),
+                res.getFechaEntrada(),
+                res.getFechaSalida(),
+                res.getEstadoReserva(),
+                res.getCantidadPersonas(),
+                res.getNotas(),
+                res.getHabitacion().getNumeroHabitacion(),
+                res.getHabitacion().getTipoHabitacion(),
+                res.getHabitacion().getTarifaHabitacion()
+            };
+            modelo.addRow(fila);
+        }
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CREARESERVAS().setVisible(true);
-            }
-        });
-    }
-
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(CREARESERVAS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new CREARESERVAS().setVisible(true);
+//            }
+//        });
+//    }
+    private ArrayList<Reservas> listaReservas;
+    private ReservasDAO reservasDAO;
+    private Reservas reserva;
+    private Reservas objetoReferencia;
+    private Cliente cliente;
+    private Habitacion habitacion;
+    private Empleado empleado;
+    private JDateChooser calendario1;
+    private JDateChooser calendario2;
+    private int idReservaCliente;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField ClienteTextField;
+    private javax.swing.JTextField HabitacionTextField;
     private javax.swing.JButton Modificar;
     private javax.swing.JButton cancelar;
+    private javax.swing.JComboBox<String> estadoReservaCombo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -525,14 +826,9 @@ public class CREARESERVAS extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField textFieldCliente;
-    private javax.swing.JTextField textFieldHabitacion;
-    private javax.swing.JTextField textFieldTipoHabitacion;
-    private javax.swing.JTextField textFieldTipoHabitacion1;
+    private javax.swing.JTextField nombreClienteField;
+    private javax.swing.JTextArea notasTextArea;
+    private javax.swing.JTextField numPersonasTextField;
+    private javax.swing.JTable reservasTable;
     // End of variables declaration//GEN-END:variables
 }

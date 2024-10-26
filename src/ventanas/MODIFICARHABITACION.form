@@ -73,7 +73,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="estadoTextField1" min="-2" pref="108" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="estadoTextField" max="32767" attributes="0"/>
+                                          <Component id="estadoCombo" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -121,7 +121,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="estadoTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="estadoCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="estadoTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
@@ -176,7 +176,7 @@
             <Property name="text" type="java.lang.String" value="Estado de habitaci&#xf3;n"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="estadoTextField">
+        <Component class="javax.swing.JComboBox" name="estadoCombo">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Disponible&quot;, &quot;Ocupada&quot;, &quot;En mantenimiento&quot; })" type="code"/>

@@ -49,7 +49,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JButton button = new JButton("Eliminar");
-                button.setIcon(new ImageIcon("ruta/a/icono.png")); // Coloca aquí la ruta a tu icono
+                //button.setIcon(new ImageIcon("ruta/a/icono.png")); // Coloca aquí la ruta a tu icono
                 return button;
             }
         });
@@ -97,7 +97,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         tarifaTextField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        estadoTextField = new javax.swing.JComboBox<>();
+        estadoCombo = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         detallesHabitacionTextArea = new javax.swing.JTextArea();
@@ -127,7 +127,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
 
         jLabel5.setText("Estado de habitación");
 
-        estadoTextField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupada", "En mantenimiento" }));
+        estadoCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Ocupada", "En mantenimiento" }));
 
         jLabel6.setText("Detalles habitación");
 
@@ -207,7 +207,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(estadoTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(estadoTextField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                        .addComponent(estadoCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,7 +240,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(estadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(estadoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(estadoTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,7 +316,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         resultadosConsulta=habitaciones.obtenerTiposHabitacion();
         while(resultadosConsulta.next()){
             String tipoHabitacion=resultadosConsulta.getString("Tipo_habitacion");
-            estadoTextField.addItem(tipoHabitacion);
+            estadoCombo.addItem(tipoHabitacion);
             
         }
     }
@@ -324,8 +324,12 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel modeloTabla = (DefaultTableModel)habitacionTabla1.getModel();
         Object id_habitacionInt=modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 0);
-        String idHab=String.valueOf(id_habitacionInt);
+        String idHab=String.valueOf(id_habitacionInt).trim();
         id_habitacion=Integer.parseInt(idHab);
+        
+        Object num_habitacionInt = modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 1);
+        numeroHab = String.valueOf(num_habitacionInt).trim();
+        
 
         Object capacidadInt=modeloTabla.getValueAt(habitacionTabla1.getSelectedRow(), 3);
         String capacidad=String.valueOf(capacidadInt);
@@ -348,7 +352,7 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String capacidadNueva=capacidadTextField.getText();
         String nuevaTarifa=tarifaTextField.getText();
-        String nuevoEstado = estadoTextField1.getText();
+        String nuevoEstado = (String)estadoCombo.getSelectedItem();
         String detallesHabNuevos = detallesHabitacionTextArea.getText();
 
         if (capacidadNueva.isEmpty() && nuevaTarifa.isEmpty() && nuevoEstado.isEmpty() && detallesHabNuevos.isEmpty()) {
@@ -367,8 +371,11 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
         tarifaHabitacion = formatoTarifa(tarifaHabitacion);
         try {
             HabitacionDAO habitacionInsert=new HabitacionDAO();
-            habitacionInsert.actualizarHabitacion(capacidadN, tarifaHabitacion, nuevoEstado, detallesHabNuevos,id_habitacion);
+            //System.out.println("Id habitacion "+id_habitacion);
+            habitacionInsert.actualizarHabitacion(capacidadN, tarifaHabitacion, nuevoEstado, detallesHabNuevos,id_habitacion,numeroHab);
             JOptionPane.showMessageDialog(null, "La habitación ha sido modificada con éxito!");
+            rellenarDatosTabla1();
+            rellenarDatosTabla2();
         } catch (SQLException ex) {
             Logger.getLogger(MODIFICARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -483,11 +490,13 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
             }
         });
     }
+    
+    private String numeroHab;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField capacidadTextField;
     private javax.swing.JTextArea detallesHabitacionTextArea;
-    private javax.swing.JComboBox<String> estadoTextField;
+    private javax.swing.JComboBox<String> estadoCombo;
     private javax.swing.JTextField estadoTextField1;
     private javax.swing.JTable habitacionTabla1;
     private javax.swing.JTable habitacionTable2;

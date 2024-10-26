@@ -25,4 +25,10 @@ public class ClienteDAO {
         statement.setString(4, correo);
         statement.executeUpdate();
     }
+    public ResultSet obtenerClientes() throws SQLException{
+        String query = "Select * from hotel.clientes";
+        PreparedStatement statement = conexion.prepareStatement(query);
+        return statement.executeQuery();
+        
+    }
 }
