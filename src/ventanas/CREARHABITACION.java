@@ -216,26 +216,21 @@ public class CREARHABITACION extends javax.swing.JFrame {
         try {
             HabitacionDAO crearHabitacion = new HabitacionDAO();
             crearHabitacion.crearHabitacion(numeroHab, tipoHabitacion, capacidad, tarifaHabitacion, estadoHabitacion, detallesHabitacion);
+            // Aquí iría el código para guardar la información de la habitación
+            // Por ahora, simplemente mostramos un mensaje de confirmación
+            JOptionPane.showMessageDialog(null, "La habitación ha sido creada con éxito!");
+
+            // Limpiar los campos
+            NumeroHabitacionTextField.setText("");
+            CapacidadTextField.setText("");
+            TarifaHabitacionTextField.setText("");
+            TipoHabitacionTextField.setText("");
+            estadoHabitacionCombo.setSelectedIndex(0);
+            DetallesHabitacionTextArea.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(CREARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        crear.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Aquí iría el código para guardar la información de la habitación
-                // Por ahora, simplemente mostramos un mensaje de confirmación
-                JOptionPane.showMessageDialog(null, "La habitación ha sido creada con éxito!");
 
-                // Limpiar los campos
-                NumeroHabitacionTextField.setText("");
-                CapacidadTextField.setText("");
-                TarifaHabitacionTextField.setText("");
-                TipoHabitacionTextField.setText("");
-                estadoHabitacionCombo.setSelectedIndex(0);
-                DetallesHabitacionTextArea.setText("");
-            }
-        });
     }//GEN-LAST:event_crearActionPerformed
 
     private boolean esNumeroEnteroValido(String numero) {

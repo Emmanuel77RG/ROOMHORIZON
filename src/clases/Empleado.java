@@ -28,6 +28,16 @@ public class Empleado {
     public void setNumeroTelefono(String numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
     }
+    public Empleado(int id_empleado, String nombre, String apellido, String correo, String passwrod,String numero, Date fechaContratacion, String rol) {
+        this.id_empleado = id_empleado;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.password=passwrod;
+        this.numeroTelefono = numero;
+        this.fechaContratacion = fechaContratacion;
+        this.rol = rol;
+    }
 
     public Empleado(int id_empleado, String nombre, String apellido, String rol, String correo,String password,String numero) {
         this.id_empleado = id_empleado;
@@ -37,6 +47,12 @@ public class Empleado {
         this.correo=correo;
         this.password = password;
         this.numeroTelefono=numero;
+    }
+
+    public Empleado(int id_empleado, String nombre, String apellido) {
+        this.id_empleado = id_empleado;
+        this.nombre = nombre;
+        this.apellido = apellido;
     }
     
     
@@ -88,6 +104,20 @@ public class Empleado {
     public void setFechaContratacion(Date fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
     }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+    
+//    public Empleado obtenerEmpleadoBuscado(ArrayList<Empleado> listaEmpleados){
+//        for(Empleado emp: listaEmpleados){
+//            if(emp.nombre==)
+//        }
+//    }
     
     
 }

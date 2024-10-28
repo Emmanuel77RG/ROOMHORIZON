@@ -45,6 +45,8 @@ public class PRINCIPAL extends javax.swing.JFrame {
         REMPLEADO = new javax.swing.JButton();
         EEMPLEADO = new javax.swing.JButton();
         CHECKIN = new javax.swing.JButton();
+        historialReservasButton = new javax.swing.JButton();
+        cerrarSesionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -59,7 +61,7 @@ public class PRINCIPAL extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         CFACTURAS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/2.png"))); // NOI18N
-        CFACTURAS.setText("Crear Facturas");
+        CFACTURAS.setText("Crear facturas");
 
         RPAGOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/4.png"))); // NOI18N
         RPAGOS.setText("Ralizar pagos ");
@@ -115,6 +117,25 @@ public class PRINCIPAL extends javax.swing.JFrame {
 
         CHECKIN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/9.png"))); // NOI18N
         CHECKIN.setText("Check-in");
+        CHECKIN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CHECKINActionPerformed(evt);
+            }
+        });
+
+        historialReservasButton.setText("Historial reservas");
+        historialReservasButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historialReservasButtonActionPerformed(evt);
+            }
+        });
+
+        cerrarSesionButton.setText("Cerrar sesion");
+        cerrarSesionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarSesionButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -123,22 +144,26 @@ public class PRINCIPAL extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 42, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(199, 199, 199))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(CFACTURAS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(historialReservasButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(CFACTURAS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
                             .addComponent(CRESERVAS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(CHABITACION, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(REMPLEADO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(MHABITACIO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(RPAGOS, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(cerrarSesionButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(RPAGOS, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
@@ -172,14 +197,18 @@ public class PRINCIPAL extends javax.swing.JFrame {
                             .addComponent(CHECKIN, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(RPAGOS, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(CFACTURAS, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 76, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(historialReservasButton, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                            .addComponent(cerrarSesionButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 30, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(54, 54, 54))))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 460));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 490));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -193,7 +222,12 @@ public class PRINCIPAL extends javax.swing.JFrame {
     }//GEN-LAST:event_CHABITACIONActionPerformed
 
     private void MHABITACIOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MHABITACIOActionPerformed
-        new MODIFICARHABITACION().setVisible(true);
+        
+        if (empleado.getRol().equals("Administrador")) {
+            new MODIFICARHABITACION().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "No tiene permiso para acceder", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_MHABITACIOActionPerformed
 
     private void CRESERVASActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CRESERVASActionPerformed
@@ -210,12 +244,53 @@ public class PRINCIPAL extends javax.swing.JFrame {
     }//GEN-LAST:event_RCIENTEActionPerformed
 
     private void REMPLEADOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_REMPLEADOActionPerformed
-        new CREAREMPLEADO().setVisible(true);
+        
+        if (empleado.getRol().equals("Administrador")) {
+            new CREAREMPLEADO().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "No tiene permiso para acceder", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_REMPLEADOActionPerformed
 
     private void EEMPLEADOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EEMPLEADOActionPerformed
-        new MODIFICAREMPLEADO().setVisible(true);
+        
+        if (empleado.getRol().equals("Administrador")) {
+            try {
+                new MODIFICAREMPLEADO(empleado).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(PRINCIPAL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No tiene permiso para acceder", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_EEMPLEADOActionPerformed
+
+    private void historialReservasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialReservasButtonActionPerformed
+        try {
+            // TODO add your handling code here:
+            new HISTORIALRESERVAS(empleado).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(PRINCIPAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_historialReservasButtonActionPerformed
+
+    private void CHECKINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CHECKINActionPerformed
+        try {
+            // TODO add your handling code here:
+            new CHECKIN(empleado).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(PRINCIPAL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_CHECKINActionPerformed
+
+    private void cerrarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesionButtonActionPerformed
+        // TODO add your handling code here:
+        // Cerrar la ventana actual
+        dispose();
+        empleado=null;
+        // Crear una nueva instancia de INICIARREP y mostrarla
+        new INCIARREP().setVisible(true);
+    }//GEN-LAST:event_cerrarSesionButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,6 +338,8 @@ public class PRINCIPAL extends javax.swing.JFrame {
     private javax.swing.JButton RCIENTE;
     private javax.swing.JButton REMPLEADO;
     private javax.swing.JButton RPAGOS;
+    private javax.swing.JButton cerrarSesionButton;
+    private javax.swing.JButton historialReservasButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;

@@ -37,6 +37,13 @@ public class Habitacion {
         this.tipoHabitacion = tipoHabitacion;
         this.tarifaHabitacion = tarifaHabitacion;
     }
+
+    public Habitacion(int idHabitacion, String numeroHabitacion, String tipoHabitacion) {
+        this.idHabitacion = idHabitacion;
+        this.numeroHabitacion = numeroHabitacion;
+        this.tipoHabitacion = tipoHabitacion;
+    }
+    
     
 
     // Getters y Setters

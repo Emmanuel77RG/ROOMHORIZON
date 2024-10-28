@@ -54,7 +54,13 @@
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="370" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane1" pref="370" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="mostrarTablaOriginalButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -76,6 +82,7 @@
                   <Component id="fechasButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="numeroHabButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="tipoHabButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="mostrarTablaOriginalButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -201,6 +208,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="mostrarTablaOriginalButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Volver a mostrar tabla"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mostrarTablaOriginalButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -3,26 +3,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/PRINCIPAL.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Habitacion.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/CREARFACTURAS.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/MODIFICAREMPLEADO.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/TIPOHABITACIONPANEL.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Cliente.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/CREAREMPLEADO.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/MODIFICARHABITACION.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Empleado.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/CHECKIN.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/INCIARREP.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/LISTAEMPLEADOS.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/NUMEROHABITACIONPANEL.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/CREARHABITACION.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/conexion/ConexionBaseDatos.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Reservas.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/PRINCIPAL.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/HISTORIALRESERVAS.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Habitacion.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/CREARFACTURAS.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Cliente.java</file>
+            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Empleado.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/conexion/ClienteDAO.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/ReservasManager.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/NUMEROHABITACIONPANEL.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/FECHASBUSQUEDAPANEL.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/CREARHABITACION.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/REGISTROCLIENTE.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/conexion/EmpleadoDAO.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/CREARESERVAS.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/conexion/ReservasDAO.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/conexion/ConexionBaseDatos.java</file>
-            <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/clases/Reservas.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/ventanas/HABITACIONESDISPONIBILIDAD.java</file>
             <file>file:/C:/Users/omara/Documents/Tareas%20UNI/Analisis%20y%20Diseño/PROYECTO%202/ROOMHORIZON/src/conexion/HabitacionDAO.java</file>
         </group>

@@ -170,34 +170,34 @@ public class REGISTROCLIENTE extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, " No puede estar vacio el campo de correo .", "Error", JOptionPane.ERROR_MESSAGE);
             return;  // Detenemos la ejecución si los detalles están vacíos
         }
-        String tel =telefono.getText();
+        String tel = telefono.getText();
         if (tel.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No puede estar vacio el campo de telefono .", "Error", JOptionPane.ERROR_MESSAGE);
             return;  // Detenemos la ejecución si los detalles están vacíos
+        }
+        String telefonoRegex = "^\\+?[0-9]{1,3} ?[0-9]{6,14}$";
+        if (!tel.matches(telefonoRegex)) {
+            JOptionPane.showMessageDialog(null, "El teléfono ingresado no tiene un formato válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         // Si todas las validaciones son correctas, se procede con la creación de la habitación
         try {
             ClienteDAO crearCliente = new ClienteDAO();
             crearCliente.crearCliente(nombrecli, apellido, correo, tel);
+
+            // Aquí iría el código para guardar la información de la habitación
+            // Por ahora, simplemente mostramos un mensaje de confirmación
+            JOptionPane.showMessageDialog(null, "Se ha registrado el cliente con éxito!");
+
+            // Limpiar los campos
+            nombrecliente.setText("");
+            apeidocliente.setText("");
+            correocliente.setText("");
+            telefono.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(CREARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        agregar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Aquí iría el código para guardar la información de la habitación
-                // Por ahora, simplemente mostramos un mensaje de confirmación
-                JOptionPane.showMessageDialog(null, "La habitación ha sido creada con éxito!");
 
-                // Limpiar los campos
-                nombrecliente.setText("");
-                apeidocliente.setText("");
-                correocliente.setText("");
-                telefono.setText("");
-        
-            }
-        });
     }//GEN-LAST:event_agregarActionPerformed
 
     /**

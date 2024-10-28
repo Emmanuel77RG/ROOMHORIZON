@@ -20,10 +20,11 @@ public class Reservas {
     private int idReserva;
     private Date fechaEntrada;
     private Date fechaSalida;
-    private LocalTime horaEntrada;
-    private LocalTime horaSalida;
+    private String horaEntrada;
+    private String horaSalida;
     private String estadoReserva;
-    private LocalDateTime fechaModificacion;
+    private Date fechaCreacion;
+    private Date fechaModificacion;
     private int cantidadPersonas;
     private String notas;
     private ArrayList<Reservas> listaReservas;
@@ -66,6 +67,23 @@ public class Reservas {
         listaReservas=new ArrayList<>();
 
     }
+
+    public Reservas(Habitacion habitacion, Cliente cliente, Empleado empleado, int idReserva, Date fechaEntrada, Date fechaSalida, String horaEntrada, String horaSalida, String estadoReserva,Date fechaCreacion, Date fechaModificacion, int cantidadPersonas, String notas) {
+        this.habitacion = habitacion;
+        this.cliente = cliente;
+        this.empleado = empleado;
+        this.idReserva = idReserva;
+        this.fechaEntrada = fechaEntrada;
+        this.fechaSalida = fechaSalida;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
+        this.estadoReserva = estadoReserva;
+        this.fechaCreacion=fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.cantidadPersonas = cantidadPersonas;
+        this.notas = notas;
+    }
+    
     public Reservas(){
 
     }
@@ -94,10 +112,12 @@ public class Reservas {
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
+    
 
     public int getIdReserva() {
         return idReserva;
     }
+    
 
     public void setIdReserva(int idReserva) {
         this.idReserva = idReserva;
@@ -119,19 +139,20 @@ public class Reservas {
         this.fechaSalida = fechaSalida;
     }
 
-    public LocalTime getHoraEntrada() {
+    public String getHoraEntrada() {
         return horaEntrada;
     }
 
-    public void setHoraEntrada(LocalTime horaEntrada) {
+    public void setHoraEntrada(String horaEntrada) {
         this.horaEntrada = horaEntrada;
     }
 
-    public LocalTime getHoraSalida() {
+    public String getHoraSalida() {
         return horaSalida;
     }
+   
 
-    public void setHoraSalida(LocalTime horaSalida) {
+    public void setHoraSalida(String horaSalida) {
         this.horaSalida = horaSalida;
     }
 
@@ -142,12 +163,15 @@ public class Reservas {
     public void setEstadoReserva(String estadoReserva) {
         this.estadoReserva = estadoReserva;
     }
+     public Date getFechaCreacion(){
+        return fechaCreacion;
+    }
 
-    public LocalDateTime getFechaModificacion() {
+    public Date getFechaModificacion() {
         return fechaModificacion;
     }
 
-    public void setFechaModificacion(LocalDateTime fechaModificacion) {
+    public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 

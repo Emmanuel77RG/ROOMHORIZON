@@ -13,8 +13,12 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-
+import java.sql.Time;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.swing.JOptionPane;
 /**
  *
  * @author omara
@@ -157,6 +161,114 @@ public class ReservasDAO {
         PreparedStatement statementHabitacion = conexion.prepareStatement(queryEstado);
         statementHabitacion.setInt(1, Id_habitacion); // Asignar Id_habitacion
         statementHabitacion.executeUpdate();          // Ejecutar la consulta para actualizar el estado de la habitación
+    }
+    
+    public ArrayList<Reservas> obtenerHistorialDeReservas(Empleado empleado) throws SQLException {
+        ArrayList<Reservas> reservasDB = new ArrayList<>();
+        Reservas reservaListar = new Reservas();
+        String query = "SELECT \n"
+                + "    r.Id_reserva, \n"
+                + "    c.Id_cliente,\n"
+                + "    c.Nombre AS Nombre_Cliente, \n"
+                + "    c.Apellido AS Apellido_Cliente, \n"
+                + "    h.Id_habitacion,\n"
+                + "    h.Numero_habitacion, \n"
+                + "    h.Tipo_habitacion, \n"
+                + "    r.Fecha_entrada, \n"
+                + "    r.Fecha_salida, \n"
+                + "    r.Hora_entrada, \n"
+                + "    r.Hora_salida, \n"
+                + "    r.Estado_reserva, \n"
+                + "    r.Fecha_creacion_reserva, \n"
+                + "    r.Fecha_modificacion, \n"
+                + "    d.Numero_personas, \n"
+                + "    d.Notas\n"
+                + "FROM \n"
+                + "    hotel.Reservas r\n"
+                + "JOIN hotel.Clientes c ON r.Id_cliente = c.Id_cliente\n"
+                + "JOIN hotel.Detalles_reserva d ON r.Id_reserva = d.Id_reserva\n"
+                + "JOIN hotel.Habitaciones h ON d.Id_habitacion = h.Id_habitacion\n"
+                + "ORDER BY \n"
+                + "    r.Fecha_creacion_reserva DESC;";
+        PreparedStatement statemnet = conexion.prepareStatement(query);
+        ResultSet resultados = statemnet.executeQuery();
+        while (resultados.next()) {
+            
+            Cliente cliente = new Cliente(
+                resultados.getInt("Id_cliente"), 
+                    resultados.getString("Nombre_Cliente"),
+                    resultados.getString("Apellido_Cliente")
+            );
+            Habitacion habitacion = new Habitacion(
+                    resultados.getInt("Id_habitacion"),
+                    resultados.getString("Numero_habitacion"),
+                    resultados.getString("Tipo_habitacion")
+            );
+            // Convertir campos a Date y String
+            Date fechaCreacion = resultados.getDate("Fecha_creacion_reserva");
+            Date fechaModificacion = resultados.getDate("Fecha_modificacion");
+
+            String horaEntrada = resultados.getTime("Hora_entrada") != null
+                    ? resultados.getTime("Hora_entrada").toString()
+                    : null;
+
+            String horaSalida = resultados.getTime("Hora_salida") != null
+                    ? resultados.getTime("Hora_salida").toString()
+                    : null;
+
+            Reservas reserva = new Reservas(
+                    habitacion,
+                    cliente,
+                    empleado,
+                    resultados.getInt("Id_reserva"),
+                    resultados.getDate("Fecha_entrada"),
+                    resultados.getDate("Fecha_salida"),
+                    horaEntrada,
+                    horaSalida,
+                    resultados.getString("Estado_reserva"),
+                    fechaCreacion,
+                    fechaModificacion,
+                    resultados.getInt("Numero_personas"),
+                    resultados.getString("Notas")
+            );
+
+            reservasDB.add(reserva);
+        }
+
+        ReservasManager.getInstance().setListaReservas(reservasDB);
+    return reservasDB;
+    }
+
+    public ArrayList<Reservas> obtenerReservasConfirmadas(Empleado empleado) throws SQLException {
+        ArrayList<Reservas> reservasDB = new ArrayList<>();
+        Reservas reservaListar = new Reservas();
+        String query = "SELECT c.Id_cliente, c.Nombre, c.Apellido, c.Correo, c.Numero,\n"
+                + "       r.Id_reserva, r.Fecha_entrada, r.Fecha_salida, r.Estado_reserva, dr.Numero_personas, dr.Notas,\n"
+                + "       h.Id_habitacion, h.Numero_habitacion, h.Tipo_habitacion, h.Tarifa_habitacion\n"
+                + "FROM hotel.Clientes c\n"
+                + "INNER JOIN hotel.Reservas r ON c.Id_cliente = r.Id_cliente\n"
+                + "INNER JOIN hotel.Detalles_reserva dr ON r.Id_reserva = dr.Id_reserva\n"
+                + "INNER JOIN hotel.Habitaciones h ON dr.Id_habitacion = h.Id_habitacion "
+                + "Where r.Estado_reserva='Confirmada'";
+        PreparedStatement statemnet = conexion.prepareStatement(query);
+        ResultSet resultados=statemnet.executeQuery();
+        while(resultados.next()){
+            Cliente cliente = new Cliente(resultados.getInt("Id_cliente"),resultados.getString("Nombre"),resultados.getString("Apellido"),resultados.getString("Correo"),resultados.getString("Numero"));
+            Habitacion habitacion=new Habitacion(resultados.getInt("Id_habitacion"),resultados.getString("Numero_habitacion"),resultados.getString("Tipo_habitacion"), resultados.getDouble("Tarifa_habitacion"));
+            Reservas reserva=new Reservas(habitacion,cliente,empleado,resultados.getInt("Id_reserva"),resultados.getDate("Fecha_entrada"),resultados.getDate("Fecha_salida"),resultados.getString("Estado_reserva"),resultados.getInt("Numero_personas"),resultados.getString("Notas"));
+            reservasDB.add(reserva);
+        }
+        ReservasManager.getInstance().setListaReservas(reservasDB);
+        return reservasDB;
+    }
+    
+    public void actualizarReservaClinte(int idReserva, int idCliente, Time horaSQL) throws SQLException{
+        String query ="Update hotel.reservas set Estado_reserva='En estancia', Hora_entrada=? where Id_reserva=? and Id_cliente=?";
+        PreparedStatement statement =conexion.prepareStatement(query);
+        statement.setTime(1, horaSQL);
+        statement.setInt(2, idReserva);
+        statement.setInt(3, idCliente);
+        statement.executeUpdate();
     }
 
 }

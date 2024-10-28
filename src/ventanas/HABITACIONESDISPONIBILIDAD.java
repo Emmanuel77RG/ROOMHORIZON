@@ -56,6 +56,7 @@ public class HABITACIONESDISPONIBILIDAD extends javax.swing.JFrame {
         numeroHabButton = new javax.swing.JButton();
         tipoHabButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        mostrarTablaOriginalButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,6 +100,13 @@ public class HABITACIONESDISPONIBILIDAD extends javax.swing.JFrame {
             }
         });
 
+        mostrarTablaOriginalButton.setText("Volver a mostrar tabla");
+        mostrarTablaOriginalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrarTablaOriginalButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,7 +132,11 @@ public class HABITACIONESDISPONIBILIDAD extends javax.swing.JFrame {
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(tipoHabButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(mostrarTablaOriginalButton)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -140,7 +152,8 @@ public class HABITACIONESDISPONIBILIDAD extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fechasButton)
                     .addComponent(numeroHabButton)
-                    .addComponent(tipoHabButton))
+                    .addComponent(tipoHabButton)
+                    .addComponent(mostrarTablaOriginalButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,6 +193,17 @@ public class HABITACIONESDISPONIBILIDAD extends javax.swing.JFrame {
         crearReserva.setHabitacionSeleccionada(habitacionSeleccionada);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void mostrarTablaOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarTablaOriginalButtonActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)habitacionesTable.getModel();
+        model.setRowCount(0);
+        try {
+            rellenarTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(HABITACIONESDISPONIBILIDAD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_mostrarTablaOriginalButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,6 +355,7 @@ public class HABITACIONESDISPONIBILIDAD extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton mostrarTablaOriginalButton;
     private javax.swing.JButton numeroHabButton;
     private javax.swing.JPanel panelExterno;
     private javax.swing.JButton tipoHabButton;

@@ -4,6 +4,8 @@
  */
 package clases;
 
+import java.util.Date;
+
 /**
  *
  * @author omara
@@ -15,6 +17,10 @@ public class Cliente {
     private String correo;
     private String numero;
 
+
+   
+
+    
     public Cliente(String nombre, String apellido, String correo, String numero) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -28,6 +34,13 @@ public class Cliente {
         this.correo = correo;
         this.numero = numero;
     }
+
+    public Cliente(int id_cliente, String nombre, String apellido) {
+        this.id_cliente = id_cliente;
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
+    
     
     
 

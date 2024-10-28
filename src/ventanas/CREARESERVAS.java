@@ -553,10 +553,10 @@ public class CREARESERVAS extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        // Obtener el texto del campo de búsqueda y convertirlo a minúsculas
         String nombreCliente = nombreClienteField.getText().trim().toLowerCase();
-        DefaultTableModel modelo = (DefaultTableModel) reservasTable.getModel();
 
+        // Verificar que el campo de búsqueda no esté vacío
         if (nombreCliente.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -565,23 +565,30 @@ public class CREARESERVAS extends javax.swing.JFrame {
         DefaultTableModel modeloOriginal = (DefaultTableModel) reservasTable.getModel();
         DefaultTableModel modeloFiltrado = new DefaultTableModel();
 
-        // Copiar las columnas al nuevo modelo
+        // Copiar las columnas del modelo original al modelo filtrado
         for (int i = 0; i < modeloOriginal.getColumnCount(); i++) {
             modeloFiltrado.addColumn(modeloOriginal.getColumnName(i));
         }
-        boolean hayCoincidencias = false;
-        for (int i = 0; i < modeloOriginal.getRowCount(); i++) {
-            String nombreFila = modeloOriginal.getValueAt(i, 0).toString().toLowerCase(); // Suponiendo que la columna 0 contiene el nombre del cliente
 
+        boolean hayCoincidencias = false;
+
+        // Recorrer cada fila en el modelo original
+        for (int i = 0; i < modeloOriginal.getRowCount(); i++) {
+            // Obtener el valor de la celda en la columna "Nombre" (columna 1)
+            String nombreFila = modeloOriginal.getValueAt(i, 1).toString().toLowerCase();
+
+            // Verificar si el nombre de la fila contiene el texto ingresado
             if (nombreFila.contains(nombreCliente)) {
-                modeloFiltrado.addRow(new Object[modeloOriginal.getColumnCount()]);
+                Object[] fila = new Object[modeloOriginal.getColumnCount()];
                 for (int j = 0; j < modeloOriginal.getColumnCount(); j++) {
-                    modeloFiltrado.setValueAt(modeloOriginal.getValueAt(i, j), modeloFiltrado.getRowCount() - 1, j);
+                    fila[j] = modeloOriginal.getValueAt(i, j);
                 }
+                modeloFiltrado.addRow(fila);
                 hayCoincidencias = true;
             }
         }
 
+        // Actualizar la tabla con el modelo filtrado o mostrar mensaje de "sin coincidencias"
         if (hayCoincidencias) {
             reservasTable.setModel(modeloFiltrado);
         } else {

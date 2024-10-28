@@ -65,20 +65,22 @@ public class MODIFICARHABITACION extends javax.swing.JFrame {
                 // Acción al hacer clic en el botón
                 button.addActionListener(e -> {
                     int confirmar = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta habitacion?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-                    DefaultTableModel modelo=(DefaultTableModel)habitacionTable2.getModel();
+                    DefaultTableModel modelo = (DefaultTableModel) habitacionTable2.getModel();
                     if (confirmar == JOptionPane.YES_OPTION) {
-                        Object idHabitacionT=modelo.getValueAt(row, 0);
-                        String idHab=String.valueOf(idHabitacionT);
-                        int idHAB=Integer.parseInt(idHab);
+                        Object idHabitacionT = modelo.getValueAt(row, 0);
+                        String idHab = String.valueOf(idHabitacionT);
+                        int idHAB = Integer.parseInt(idHab);
                         try {
                             HabitacionDAO habitacionSQL = new HabitacionDAO();
                             habitacionSQL.eliminarHabitacion(idHAB);
                             JOptionPane.showMessageDialog(null, "La habitación ha sido eliminada con éxito!");
-                        ((DefaultTableModel) habitacionTable2.getModel()).removeRow(row); // Elimina la fila
+                            ((DefaultTableModel) habitacionTable2.getModel()).removeRow(row); // Elimina la fila
+                            rellenarDatosTabla1();
+                            rellenarDatosTabla2();
                         } catch (SQLException ex) {
                             Logger.getLogger(MODIFICARHABITACION.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        
+
                     }
                 });
                 return button;
