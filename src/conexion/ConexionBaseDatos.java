@@ -23,7 +23,8 @@ public class ConexionBaseDatos {
         if(coneccionDB==null){
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                String url="jdbc:mysql://localhost:3306/hotel";
+                //Para establecer la zona horaria de la siguiente forma hotel?serverTimezone=America/Mexico_City despues de hotel
+                String url="jdbc:mysql://localhost:3306/hotel"; 
                 String usuario="root";
                 String password="48v01jL3/7)32&";
                 coneccionDB=DriverManager.getConnection(url, usuario, password);
